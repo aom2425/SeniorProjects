@@ -1,7 +1,9 @@
 package com.example.seniorproject.activty;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 import com.example.seniorproject.Client;
 import com.example.seniorproject.ConnectionToServer.ConnectClient;
 import com.example.seniorproject.ConnectionToServer.TCPClient;
+import com.example.seniorproject.MainScreen;
 import com.example.seniorproject.R;
 import com.example.seniorproject.UserSession.SessionManager;
 import com.example.seniorproject.helper.InputValidation;
@@ -110,17 +113,14 @@ public class MainActivity extends AppCompatActivity {
             failedLogIn();
             return;
         }/**/
-
         btnLogin.setEnabled(false);
-        final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this, R.style.AppTheme);
+        final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this, R.style.Theme_AppCompat_Light);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating!");
-        progressDialog.show();
-
-        // TODO: Authenication send packets to server and receive then
-
-        String Email = et_Email.getText().toString();
-        String Password = et_Password.getText().toString();/**/
+        progressDialog.show();/**/
+        Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+        startActivity(intent);
+        //TODO: verify if the user is right and go into Dashboard
     }
     public void loginCheck(final String Email, final String Password){
         String tag_aut = "login_rec";
@@ -159,17 +159,22 @@ public class MainActivity extends AppCompatActivity {
             mTcpClient = new TCPClient(new TCPClient.OnMessageReceived() {
                 @Override
                 public void messageReceived(String message) {
-                    publishProgress("Sending val");
+                    publishProgress(message);
                 }
             });
             String Email = et_Email.getText().toString();
             String Password = et_Password.getText().toString();
-            //Log.d("Email Tag:", Email);
-            //Log.d("BLEEEEEEEEEEE: ",Email);
-            //Log.d("Password Tag:", Password);
             mTcpClient.run(Email, Password);
             return null;
         }
+
+        /*String msg = "Wrong username or password";
+        new AlertDialog.Builder(this.context).setTitle("Error in login").setMessage(msg).setOnDismissListener(new DialogInterface.OnDismissListener() {
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+
+        }
+        }).show();/**/
     }
 
 }

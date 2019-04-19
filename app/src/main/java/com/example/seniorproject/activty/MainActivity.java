@@ -1,9 +1,7 @@
 package com.example.seniorproject.activty;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,22 +14,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.seniorproject.Client;
+import com.example.seniorproject.helper.Client;
 import com.example.seniorproject.ConnectionToServer.ConnectClient;
 import com.example.seniorproject.ConnectionToServer.TCPClient;
-import com.example.seniorproject.MainScreen;
 import com.example.seniorproject.R;
 import com.example.seniorproject.UserSession.SessionManager;
 import com.example.seniorproject.helper.InputValidation;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 
@@ -68,12 +58,7 @@ public class MainActivity extends AppCompatActivity {
         });
         initViews();
 
-        // My Test for new Function
-        arrayList = new ArrayList<String>();
-        //final EditText editText = (EditText) findViewById(R.id.et_email);
-        //Button send = (Button)findViewById(R.id.btn_login);
         initListenerLogin();
-
         //----------------------------------
         initListenerRegister();
     }

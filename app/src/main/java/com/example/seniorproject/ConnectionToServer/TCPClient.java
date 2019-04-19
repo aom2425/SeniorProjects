@@ -50,7 +50,7 @@ public class TCPClient {
         }
 
         mMessageListener = null;
-        in = null;
+        //in = null;
         out = null;
         serverMessage = null;
     }
@@ -62,15 +62,15 @@ public class TCPClient {
         return send_cred;
     }
     public void run(String Email, String Password) {
-        mRun = true;
         try {
-            //here you must put your computer's IP address.
             InetAddress serverAddr = InetAddress.getByName(SERVERIP);
             //Log.e("TCP Client", "C: Connecting...");
             //create a socket to make the connection with the server
             Socket socket = new Socket(serverAddr, SERVERPORT);
-            Log.d("MyApp","I am here");
             sendMessage(socket, Email, Password);
+            receiveMessage(socket);
+            Log.d("MyApp",serverMessage);
+            socket.close();
         } catch (Exception e) {
             Log.e("TCP", "C: Error", e);
         }/**/
@@ -81,10 +81,39 @@ public class TCPClient {
             //send the message to the server
             out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
             out.write(String.valueOf(defineJSONObject(Email,Password)));
-
             out.flush();
-            receiveMessage(socket);
+            //commented out nr 1
+        } catch (Exception e) {
+            Log.e("TCP", "S: Error", e);
+        }
+    }
+    public void receiveMessage(Socket socket) throws IOException{
+        String serverResponse = "";
+        try {
+            String line;
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
+            //Log.d("RECEIVE From Server", in.toString());
+            //in this while the client listens for the messages sent by the server
+            if((line = in.readLine()) != null) {
+                Log.d("LINE From Server", line);
+                serverMessage = line;
+            }
+            Log.d("MESSAGE", serverMessage);
 
+        }catch (Exception e){
+            Log.e("TCP", "R: Error", e);
+        }
+            //the socket must be closed. It is not possible to reconnect to this socket
+            // after it is closed, which means a new socket instance has to be created.
+    }
+    public interface OnMessageReceived {
+        public void messageReceived(String message);
+    }/**/
+}
+
+
+
+/*  Commented out Nr 1
 
             //out.write(String.valueOf("select email, password from users"));
             //receiveMessage(socket);
@@ -100,52 +129,21 @@ public class TCPClient {
             //}
             serverMessage = null;
          //}/**/
-            //receive the message which the server sends back
+//receive the message which the server sends back
 
-        } catch (Exception e) {
-            Log.e("TCP", "S: Error", e);
-        } finally {
-            //the socket must be closed. It is not possible to reconnect to this socket
-            // after it is closed, which means a new socket instance has to be created.
-            socket.close();
-        }
-    }
-    public void receiveMessage(Socket socket) throws IOException{
-        try {
-            String line;
-            StringBuilder sb = new StringBuilder();
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
-            Log.d("Receive Message", "Do I even Go to Receive Message");
-            Log.d("Message From Server", in.toString());
+//String msg = in.readLine();
+//SserverMessage = in.readLine();
 
-            //in this while the client listens for the messages sent by the server
-            while ((line = in.readLine()) != null) {
-                sb.append(line).append('\n');
-            }
-            Log.d("MESSAGE", sb.toString());
-
-            //String msg = in.readLine();
-            //SserverMessage = in.readLine();
-
-            //Log.d("Message From Server", msg.toString());
-            /*if (serverMessage != null && mMessageListener != null) {
+//Log.d("Message From Server", msg.toString());
+            /*while (true){
+                if (serverMessage != null && mMessageListener != null) {
             //call the method messageReceived from MyActivity class
-                mMessageListener.messageReceived(serverMessage);
-            }
-            serverMessage = null;/**/
-            //}/**/
-            //receive the message which the server sends back
-            //Log.e("RESPONSE FROM SERVER", "S: Received Message: '" + serverMessage + "'");
+                    mMessageListener.messageReceived(serverMessage);
+                }
+                Log.d("MESSAGE", serverMessage);
 
-        }catch (Exception e){
-            Log.e("TCP", "S: Error", e);
-        }finally {
-            //the socket must be closed. It is not possible to reconnect to this socket
-            // after it is closed, which means a new socket instance has to be created.
-            socket.close();
-        }
-    }
-    public interface OnMessageReceived {
-        public void messageReceived(String message);
-    }/**/
-}
+                serverMessage = null;
+            }/**/
+
+//receive the message which the server sends back
+//Log.e("RESPONSE FROM SERVER", "S: Received Message: '" + serverMessage + "'");

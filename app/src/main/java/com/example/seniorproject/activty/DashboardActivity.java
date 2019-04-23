@@ -1,7 +1,10 @@
 package com.example.seniorproject.activty;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,6 +17,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.seniorproject.R;
+import com.example.seniorproject.fragments.ExampleFragment;
 import com.example.seniorproject.fragments.HomeFragment;
 import com.example.seniorproject.fragments.MessageFragment;
 import com.example.seniorproject.fragments.ProfileFragment;
@@ -46,9 +50,13 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
         switch (menuItem.getItemId()){
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+                break;
+            case R.id.nav_example:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ExampleFragment()).commit();
                 break;
             case R.id.nav_manage:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MessageFragment()).commit();

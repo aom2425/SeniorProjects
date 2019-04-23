@@ -1,0 +1,67 @@
+package com.example.seniorproject.ConnectionToServer;
+
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.Socket;
+
+public class TCPRegister {
+    private String serverMessage;
+    public static final String SERVERIP = "192.168.1.6"; //your computer IP address
+    public static final int SERVERPORT = 8001;
+    PrintWriter out;
+    BufferedReader in;
+
+    public JSONObject defineJSONObject(String Name, String Email, String Password) throws JSONException {
+        JSONObject send_cred = new JSONObject();
+        send_cred.put("Status", "Register");
+        send_cred.put("Name", Name);
+        send_cred.put("Email", Email);
+        send_cred.put("Password", Password);
+        send_cred.put("Entry", "");
+        return send_cred;
+    }
+    public void run(String Name, String Email, String Password) {
+        try {
+            InetAddress serverAddr = InetAddress.getByName(SERVERIP);
+            Log.e("TCP Client", "C: Connecting...");
+            Socket socket = new Socket(serverAddr, SERVERPORT);
+            sendMesage(socket, Name, Email, Password);
+            receiveMessage(socket);
+            Log.d("MyApp",serverMessage);
+            socket.close();
+        } catch (Exception e) {
+            Log.e("TCP", "C: Error", e);
+        }/**/
+    }
+    public void sendMesage(Socket socket, String name, String email, String password)throws IOException {
+        try {
+            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+            out.write(String.valueOf(defineJSONObject(name, email, password)));
+            out.flush();
+        } catch (Exception e){
+            Log.e("TCP", "S: Error", e);
+        }
+    }
+    public void receiveMessage(Socket socket) throws IOException{
+        try{
+            String line;
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+            if((line = in.readLine()) != null){
+                Log.d("LINE FROM SERVER", line);
+                serverMessage = line;
+            }
+        } catch (Exception e){
+            Log.e("TCP", "R: Error", e);
+        }
+    }
+}

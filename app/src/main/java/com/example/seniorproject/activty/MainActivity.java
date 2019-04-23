@@ -23,6 +23,7 @@ import com.example.seniorproject.helper.InputValidation;
 
 import java.net.ServerSocket;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -42,10 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> arrayList;
     private TCPClient mTcpClient;
 
-
     private final AppCompatActivity activity = MainActivity.this;
     private static final String TAG = "LoginActivity";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,19 +102,28 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating!");
         progressDialog.show();/**/
-        Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
-        startActivity(intent);
-        //TODO: verify if the user is right and go into Dashboard
+        verifyLogIn();
+
     }
-    public void loginCheck(final String Email, final String Password){
-        String tag_aut = "login_rec";
+    public void verifyLogIn(){
+        List<String> mList = new ArrayList<String>();
+        mList = mTcpClient.accessApp();
+        int size_json_sz =  mTcpClient.accessApp().size();
+        String flag =mTcpClient.accessApp().get(size_json_sz -1) ;
+       if (Boolean.valueOf(flag) == true) {
+            Intent i = new Intent(MainActivity.this, DashboardActivity.class);
+            startActivity(i);
+        }
+        else {
+            String msg = "Wrong username or password";
+            OpenDialogMsg openDialogMsg = new OpenDialogMsg();
+            openDialogMsg.show(getSupportFragmentManager(), "Error Message");
+        }
     }
+
     public void failedLogIn() {
         Toast.makeText(getBaseContext(), "Login Failed!", Toast.LENGTH_LONG).show();
         btnLogin.setEnabled(true);
-    }
-    public void successLogIn(){
-        //TODO: Toast set to success -> true and make a sucess method where it send to server
     }
 
     public boolean validate(){
@@ -152,14 +160,6 @@ public class MainActivity extends AppCompatActivity {
             mTcpClient.run(Email, Password);
             return null;
         }
-
-        /*String msg = "Wrong username or password";
-        new AlertDialog.Builder(this.context).setTitle("Error in login").setMessage(msg).setOnDismissListener(new DialogInterface.OnDismissListener() {
-        @Override
-        public void onDismiss(DialogInterface dialog) {
-
-        }
-        }).show();/**/
     }
 
 }

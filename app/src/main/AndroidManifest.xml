@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainScreen"
+            android:name=".helper.MainScreen"
             android:label="@string/title_activity_main_screen"></activity>
         <activity android:name=".activty.DashboardActivity"
             android:theme="@style/AppTheme.NoActionBar"/>

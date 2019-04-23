@@ -11,6 +11,8 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.PasswordAuthentication;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TCPClient {
 
@@ -23,10 +25,6 @@ public class TCPClient {
     PrintWriter out;
     BufferedReader in;
 
-    // Constructor
-    /*public TCPClient(){
-
-    }/**/
     public TCPClient(OnMessageReceived listener) {
         mMessageListener = listener;
     }/**/
@@ -56,6 +54,7 @@ public class TCPClient {
     }
     public JSONObject defineJSONObject(String Email, String Password) throws JSONException {
         JSONObject send_cred = new JSONObject();
+        send_cred.put("Status", "Login");
         send_cred.put("Email", Email);
         send_cred.put("Password", Password);
         send_cred.put("Entry", "");
@@ -65,11 +64,12 @@ public class TCPClient {
         try {
             InetAddress serverAddr = InetAddress.getByName(SERVERIP);
             //Log.e("TCP Client", "C: Connecting...");
-            //create a socket to make the connection with the server
             Socket socket = new Socket(serverAddr, SERVERPORT);
             sendMessage(socket, Email, Password);
             receiveMessage(socket);
             Log.d("MyApp",serverMessage);
+            int size_json_rec = accessApp().size();
+            Log.d("ACCESSS",accessApp().get(size_json_rec-1));
             socket.close();
         } catch (Exception e) {
             Log.e("TCP", "C: Error", e);
@@ -106,44 +106,21 @@ public class TCPClient {
             //the socket must be closed. It is not possible to reconnect to this socket
             // after it is closed, which means a new socket instance has to be created.
     }
+    public List<String> accessApp(){
+        Log.d("AUTHENTICATE", serverMessage);
+        List<String> list = new ArrayList<String>();
+        try {
+            JSONObject chek_auth = new JSONObject(serverMessage);
+            list.add((String) chek_auth.get("Email"));
+            list.add((String) chek_auth.get("Entry"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
     public interface OnMessageReceived {
         public void messageReceived(String message);
     }/**/
 }
 
 
-
-/*  Commented out Nr 1
-
-            //out.write(String.valueOf("select email, password from users"));
-            //receiveMessage(socket);
-            /*in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-            //in this while the client listens for the messages sent by the server
-            //while (true) {
-            serverMessage = in.readLine();
-            Log.d("Message From Server", serverMessage.toString());
-            //if (serverMessage != null && mMessageListener != null) {
-                //call the method messageReceived from MyActivity class
-            //    mMessageListener.messageReceived(serverMessage);
-            //}
-            serverMessage = null;
-         //}/**/
-//receive the message which the server sends back
-
-//String msg = in.readLine();
-//SserverMessage = in.readLine();
-
-//Log.d("Message From Server", msg.toString());
-            /*while (true){
-                if (serverMessage != null && mMessageListener != null) {
-            //call the method messageReceived from MyActivity class
-                    mMessageListener.messageReceived(serverMessage);
-                }
-                Log.d("MESSAGE", serverMessage);
-
-                serverMessage = null;
-            }/**/
-
-//receive the message which the server sends back
-//Log.e("RESPONSE FROM SERVER", "S: Received Message: '" + serverMessage + "'");

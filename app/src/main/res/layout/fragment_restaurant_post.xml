@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ubu">
+
+    <TextView
+        android:id="@+id/pic_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Post Resaurant"
+        android:textSize="30sp" />
+
+    <EditText
+        android:id="@+id/name_id"
+        android:layout_width="250dp"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/pic_text"
+        android:layout_marginTop="40dp"
+        android:background="#11000000"
+        android:ems="10"
+        android:textColor="#000000" />
+    <TextView
+        android:id="@+id/name_id_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/name_id"
+        android:layout_alignStart="@+id/name_id"
+        android:layout_below="@+id/pic_text"
+        android:layout_marginTop="22dp"
+        android:text="Restaurant name"
+        android:textColor="#ffff"
+        android:textSize="14sp"/>
+
+    <EditText
+        android:id="@+id/discription_id"
+        android:layout_width="250dp"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/pic_text"
+        android:layout_marginTop="100dp"
+        android:background="#11000000"
+        android:ems="10"
+        android:textColor="#000000" />
+    <TextView
+        android:id="@+id/discription_id_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/discription_id"
+        android:layout_alignStart="@+id/discription_id"
+        android:layout_below="@+id/pic_text"
+        android:layout_marginTop="81dp"
+        android:text="Restaurant Discription"
+        android:textColor="#ffff"
+        android:textSize="14sp"/>
+
+
+    <Button
+        android:id="@+id/add_pic"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/pic_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="379dp"
+        android:background="@drawable/button_rectangle_green"
+        android:text="Insert a picture" />
+    <Button
+        android:id="@+id/id_post"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/pic_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="450dp"
+        android:background="@drawable/button_rectangle_green"
+        android:text="Post it!" />
+
+</RelativeLayout>

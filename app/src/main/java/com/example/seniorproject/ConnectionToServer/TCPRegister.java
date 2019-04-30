@@ -2,6 +2,8 @@ package com.example.seniorproject.ConnectionToServer;
 
 import android.util.Log;
 
+import com.example.seniorproject.helper.IpPort;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,15 +17,26 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 public class TCPRegister {
+
     private String serverMessage;
-    public static final String SERVERIP = "192.168.1.6"; //your computer IP address
-    public static final int SERVERPORT = 8001;
+    IpPort ipPort;
+    public final String SERVERIP = ipPort.getHost(); //your computer IP address
+    public final int SERVERPORT = ipPort.getPort();
+    public String resp;
     PrintWriter out;
     BufferedReader in;
+
+    public TCPRegister(String responsability){
+        resp = responsability;
+    }
+    public TCPRegister(){}
 
     public JSONObject defineJSONObject(String Name, String Email, String Password) throws JSONException {
         JSONObject send_cred = new JSONObject();
         send_cred.put("Status", "Register");
+        //Log.d("RESPONSABILITY", resp);
+        send_cred.put("Responsability",  resp);
+        send_cred.put("UUID", "");
         send_cred.put("Name", Name);
         send_cred.put("Email", Email);
         send_cred.put("Password", Password);

@@ -31,11 +31,11 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        initViews();
+        setContentView(R.layout.user_selection);
+        //initViews();
         //initListeners();
     }
-    private void initViews(){
+    /*private void initViews(){
         et_Email = (EditText) findViewById(R.id.et_email);
         et_Password = (EditText) findViewById(R.id.et_password);
         btn_Login = (Button) findViewById(R.id.btn_login);
@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-    }/**/
+    }
     public class LoginUser extends AsyncTask<String, Void, String>{
         @Override
         protected String doInBackground(String... strings){
@@ -89,5 +89,5 @@ public class LoginActivity extends AppCompatActivity {
             String Password = strings[1];
             return null;
         }
-    }
+    }/**/
 }

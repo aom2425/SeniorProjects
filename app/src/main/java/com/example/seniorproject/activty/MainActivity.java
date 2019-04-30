@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.seniorproject.activty.Restaurant.RestaurantActivity;
+import com.example.seniorproject.fragments.RestaurantPostFragment;
 import com.example.seniorproject.helper.Client;
 import com.example.seniorproject.ConnectionToServer.ConnectClient;
 import com.example.seniorproject.ConnectionToServer.TCPClient;
@@ -26,25 +28,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
 
-    Client client = new Client();
-    EditText et_Email, et_Password;
+    static EditText et_Email;
+    static EditText et_Password;
     TextView tvRegister;
     Button btnLogin;
-    ConnectClient connectClient;
-    InputValidation inputValidation;
-    private SessionManager session;
-    private Context mContext;
 
-    private static final String HOST = "192.168.1.6";
+    private static final String HOST = "192.168.1.4";
     private static final int PORT = 8001;
-    private ServerSocket serverSocket;
-    private ArrayList<String> arrayList;
-    private TCPClient mTcpClient;
-
+    private static TCPClient mTcpClient;
     private final AppCompatActivity activity = MainActivity.this;
     private static final String TAG = "LoginActivity";
+    public static String uuid;
+    public static List<String> mList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, RegisterActivity.class);
+                Intent i = new Intent(MainActivity.this, UserResponsabilities.class);
                 startActivity(i);
             }
         });
@@ -82,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 logInUser();
+                Log.d("TAG mLIST", String.valueOf(mList));
                 nullInputEditText();
             }
             private void nullInputEditText(){
@@ -97,24 +95,39 @@ public class MainActivity extends AppCompatActivity {
             failedLogIn();
             return;
         }/**/
-        btnLogin.setEnabled(false);
+        btnLogin.setEnabled(true);
         final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this, R.style.Theme_AppCompat_Light);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating!");
         progressDialog.show();/**/
-        verifyLogIn();
 
     }
-    public void verifyLogIn(){
-        List<String> mList = new ArrayList<String>();
-        mList = mTcpClient.accessApp();
-        int size_json_sz =  mTcpClient.accessApp().size();
-        String flag =mTcpClient.accessApp().get(size_json_sz -1) ;
-       if (Boolean.valueOf(flag) == true) {
-            Intent i = new Intent(MainActivity.this, DashboardActivity.class);
-            startActivity(i);
-        }
-        else {
+    public void createCustommerDash(){
+        Intent i = new Intent(MainActivity.this, DashboardActivity.class);
+        startActivity(i);
+    }
+    public void createRestaurantDash(){
+        Intent i = new Intent(MainActivity.this, RestaurantActivity.class);
+        startActivity(i);
+    }
+    public  void verifyLogIn(){
+        List<String> mList = mTcpClient.accessApp();
+        int size_json_sz =  mList.size();
+        String entry = "Email";
+        Log.d("TAG list", String.valueOf(mList.get(0)));
+        uuid = String.valueOf(mList.get(1));
+        Log.d("Receiver size", String.valueOf(size_json_sz));
+        String flag = mList.get(size_json_sz - 1);
+        if (Boolean.valueOf(flag)) {
+            if(String.valueOf(mList.get(0)).equals("Custommer")|| String.valueOf(mList.get(0)).equals("Cyclist")){
+                createCustommerDash();
+            }
+            else {
+                createRestaurantDash();
+            }
+            //
+
+        } else {
             String msg = "Wrong username or password";
             OpenDialogMsg openDialogMsg = new OpenDialogMsg();
             openDialogMsg.show(getSupportFragmentManager(), "Error Message");
@@ -146,19 +159,45 @@ public class MainActivity extends AppCompatActivity {
         }
         return valid;
     }
-    public  class connectTask extends AsyncTask<String,String,TCPClient>{
+    public class connectTask extends AsyncTask<String,String,String>{
+
+        List<String> list;
+        Bundle args = new Bundle();
+
+        /*public connectTask(List<String> a){
+            a = this.list;
+        }/**/
         @Override
-        protected TCPClient doInBackground(String... strings) {
+        /*protected TCPClient doInBackground(String... strings) {
             mTcpClient = new TCPClient(new TCPClient.OnMessageReceived() {
                 @Override
                 public void messageReceived(String message) {
                     publishProgress(message);
                 }
-            });
+            });/**/
+        //protected TCPClient doInBackground(String... strings) {
+        protected String doInBackground(String... strings) {
+            mTcpClient = new TCPClient();/**/
+
             String Email = et_Email.getText().toString();
             String Password = et_Password.getText().toString();
             mTcpClient.run(Email, Password);
+            Log.d("TAG SIZE", String.valueOf(mTcpClient.mesageSize()));
+            verifyLogIn();
+
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+        }/**/
+
+        public void test(){
+            try {
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

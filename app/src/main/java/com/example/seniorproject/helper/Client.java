@@ -1,4 +1,4 @@
-package com.example.seniorproject;
+package com.example.seniorproject.helper;
 
 public class Client {
 

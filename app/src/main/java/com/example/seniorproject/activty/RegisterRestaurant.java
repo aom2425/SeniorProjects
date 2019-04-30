@@ -1,39 +1,27 @@
 package com.example.seniorproject.activty;
 
-
-
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.app.ProgressDialog;
 import android.widget.Toast;
 
-import com.example.seniorproject.R;
 import com.example.seniorproject.ConnectionToServer.TCPRegister;
-import com.example.seniorproject.helper.IpPort;
+import com.example.seniorproject.R;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class RegisterActivity extends AppCompatActivity {
-
-    public IpPort ipPort;
+public class RegisterRestaurant extends AppCompatActivity {
 
     private static final String TAG = "RegiserActivity";
-    private final String HOST = ipPort.HOST;
-    private final int PORT = ipPort.PORT;
-    private ProgressDialog pDialog;
+    private static final String HOST = "192.168.1.6";
+    private static final int PORT = 8001;
     private EditText et_Name, et_Email, et_Password;
     private Button btnRegister;
     private TCPRegister mTCPregister;
-    public String resp ="";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +29,10 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             public void uncaughtException(Thread paramThread, Throwable paramThrowable) {
-                Log.e("Error"+Thread.currentThread().getStackTrace()[2],paramThrowable.getLocalizedMessage());
+                Log.e("Error" + Thread.currentThread().getStackTrace()[2], paramThrowable.getLocalizedMessage());
             }
         });/**/
-        //getSupportActionBar().hide();
-        initViews();
-        initListeners();
     }
-
     private void initViews(){
         et_Name = (EditText) findViewById(R.id.et_name);
         et_Email = (EditText) findViewById(R.id.et_reg_email);
@@ -64,7 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String Password = et_Password.getText().toString();
                 new RegisterUser().execute(Name, Email, Password);
                 //nullInputEditText();
-                Intent i = new Intent(RegisterActivity.this, MainActivity.class);
+                Intent i = new Intent(RegisterRestaurant.this, MainActivity.class);
                 startActivity(i);
             }
             private void nullInputEditText(){
@@ -97,14 +81,8 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
         btnRegister.setEnabled(false);
-        verifyRegister();
+        //verifyRegister();
     }/**/
-
-    public void verifyRegister() {
-        List<String> mList = new ArrayList<String>();
-        //TODO: finish the verificitation
-    }
-
     public class RegisterUser extends AsyncTask<String, Void, String> {
 
         @Override
@@ -115,13 +93,9 @@ public class RegisterActivity extends AppCompatActivity {
             //String Name = et_Name.getText().toString();
             //String Email = et_Email.getText().toString();
             //String Password = et_Password.getText().toString();
-            Intent intent = getIntent();
-            String user_res = intent.getExtras().getString("Responsability");
-            Log.d("MESSAGE FROM RESP", resp);
-            mTCPregister = new TCPRegister(user_res);
+            mTCPregister = new TCPRegister();
             mTCPregister.run(Name, Email, Password);
             return null;
         }
     }
-        private void initObjects(){}
 }

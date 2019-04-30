@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.seniorproject.ConnectionToServer.HandleMd5;
 import com.example.seniorproject.activty.Restaurant.RestaurantActivity;
 import com.example.seniorproject.fragments.RestaurantPostFragment;
 import com.example.seniorproject.helper.Client;
@@ -24,6 +25,8 @@ import com.example.seniorproject.UserSession.SessionManager;
 import com.example.seniorproject.helper.InputValidation;
 
 import java.net.ServerSocket;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -159,6 +162,7 @@ public class MainActivity extends AppCompatActivity  {
         }
         return valid;
     }
+
     public class connectTask extends AsyncTask<String,String,String>{
 
         List<String> list;
@@ -181,6 +185,9 @@ public class MainActivity extends AppCompatActivity  {
 
             String Email = et_Email.getText().toString();
             String Password = et_Password.getText().toString();
+            //String hashToDb = BCrypt.hashpw(Password, BCrypt.getsalt());
+            //HandleMd5 hmd5 = new HandleMd5(Password);
+
             mTcpClient.run(Email, Password);
             Log.d("TAG SIZE", String.valueOf(mTcpClient.mesageSize()));
             verifyLogIn();

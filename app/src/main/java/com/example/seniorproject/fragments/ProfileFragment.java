@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.example.seniorproject.ExampleAdapter;
@@ -21,29 +22,17 @@ import java.util.ArrayList;
 
 public class ProfileFragment extends Fragment {
 
-    private RecyclerView mRecyclerView;
-    private ExampleAdapter mExampleAdapter;
-    private ArrayList<ExampleItem> mExampleList;
-    private RequestQueue mRequestQueue;
-
-
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
+    TextView name, email;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        name = (TextView) getView().findViewById(R.id.text_name);
+        email = (TextView) getView().findViewById(R.id.text_email);
+        //name.setText("Users Name");
+        //email.setText("Users Email");
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
-    }
 }

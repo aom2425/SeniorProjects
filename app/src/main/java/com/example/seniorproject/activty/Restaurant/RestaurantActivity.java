@@ -20,6 +20,7 @@ import com.example.seniorproject.fragments.ExampleFragment;
 import com.example.seniorproject.fragments.HomeFragment;
 import com.example.seniorproject.fragments.MessageFragment;
 import com.example.seniorproject.fragments.ProfileFragment;
+import com.example.seniorproject.fragments.RestaurantExampleFragment;
 import com.example.seniorproject.fragments.RestaurantHomeFragment;
 import com.example.seniorproject.fragments.RestaurantPostFragment;
 import com.example.seniorproject.fragments.RestaurantToolsFragment;
@@ -55,6 +56,9 @@ public class RestaurantActivity extends AppCompatActivity implements NavigationV
         switch (menuItem.getItemId()){
             case R.id.nav_home_restaurant:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new RestaurantHomeFragment()).commit();
+                break;
+            case R.id.nav_home_restaurants:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new RestaurantExampleFragment()).commit();
                 break;
             case R.id.nav_post_restaurant:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new RestaurantPostFragment()).commit();

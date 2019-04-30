@@ -23,11 +23,8 @@ import java.util.List;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    public IpPort ipPort;
 
     private static final String TAG = "RegiserActivity";
-    private final String HOST = ipPort.HOST;
-    private final int PORT = ipPort.PORT;
     private ProgressDialog pDialog;
     private EditText et_Name, et_Email, et_Password;
     private Button btnRegister;
@@ -63,6 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String Email = et_Email.getText().toString();
                 String Password = et_Password.getText().toString();
                 new RegisterUser().execute(Name, Email, Password);
+                registerUser();
                 //nullInputEditText();
                 Intent i = new Intent(RegisterActivity.this, MainActivity.class);
                 startActivity(i);
@@ -112,9 +110,7 @@ public class RegisterActivity extends AppCompatActivity {
             String Name = params[0].toString();
             String Email = params[1].toString();
             String Password = params[2].toString();
-            //String Name = et_Name.getText().toString();
-            //String Email = et_Email.getText().toString();
-            //String Password = et_Password.getText().toString();
+
             Intent intent = getIntent();
             String user_res = intent.getExtras().getString("Responsability");
             Log.d("MESSAGE FROM RESP", resp);

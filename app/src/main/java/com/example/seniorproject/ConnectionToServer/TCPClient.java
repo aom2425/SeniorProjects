@@ -15,6 +15,8 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.PasswordAuthentication;
 import java.net.Socket;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,11 +65,18 @@ public class TCPClient {
         send_cred.put("Entry", "");
         return send_cred;
     }
+
     public void run(String Email, String Password) {
         try {
             InetAddress serverAddr = InetAddress.getByName(SERVERIP);
             //Log.e("TCP Client", "C: Connecting...");
             Socket socket = new Socket(serverAddr, SERVERPORT);
+
+            //Hash password to send
+            HandleMd5 hmd5 = new HandleMd5(Password);
+            Password = hmd5.md5(Password);
+            Log.d("Password", Password);
+
             sendMessage(socket, Email, Password);
             receiveMessage(socket);
 

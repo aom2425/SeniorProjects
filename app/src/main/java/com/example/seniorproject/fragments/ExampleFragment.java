@@ -1,5 +1,6 @@
 package com.example.seniorproject.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.seniorproject.ExampleAdapter;
 import com.example.seniorproject.ExampleItem;
 import com.example.seniorproject.R;
+import com.example.seniorproject.activty.DetailActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,12 +30,15 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ExampleFragment extends Fragment {
+public class ExampleFragment extends Fragment implements ExampleAdapter.OnItemClickListener {
 
+    public static final String EXTRA_URL = "imageUrl";
+    public static final String EXTRA_CREATOR = "creatorName";
+    public static final String EXTRA_LIKES = "likeCount";
     private RecyclerView mRecyclerView;
     private ExampleAdapter mExampleAdapter;
     private ArrayList<ExampleItem> mExampleList;
-    private RequestQueue mRequestQueue;
+    private RequestQueue mRequestQueue; //needed for volley
 
 
     @Nullable
@@ -58,7 +63,7 @@ public class ExampleFragment extends Fragment {
     }
 
     private void parseJSON() {
-        String url = "https://pixabay.com/api/?key=5303976-fd6581ad4ac165d1b75cc15b3&q=kitten&image_type=photo&pretty=true";
+        String url = "https://pixabay.com/api/?key=5303976-fd6581ad4ac165d1b75cc15b3&q=restaurants&image_type=photo&pretty=true";
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -75,6 +80,7 @@ public class ExampleFragment extends Fragment {
                             }
                             mExampleAdapter = new ExampleAdapter(getActivity(), mExampleList);
                             mRecyclerView.setAdapter(mExampleAdapter);
+                            mExampleAdapter.setOnItemClickListener(ExampleFragment.this);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -83,9 +89,21 @@ public class ExampleFragment extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                error.printStackTrace();
             }
         });
         mRequestQueue.add(request);
     }/**/
+
+    @Override
+    public void onItemClick(int position) {
+        Intent detailIntent = new Intent(getActivity(), DetailActivity.class);
+        ExampleItem clickedItem = mExampleList.get(position);
+
+        detailIntent.putExtra(EXTRA_URL, clickedItem.getImageUrl());
+        detailIntent.putExtra(EXTRA_CREATOR, clickedItem.getCreator());
+        detailIntent.putExtra(EXTRA_LIKES, clickedItem.getLikeCount());
+
+        startActivity(detailIntent);
+    }
 }

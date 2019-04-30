@@ -28,7 +28,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class HomeFragment extends Fragment {
+public class RestaurantExampleFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private ExampleAdapter mExampleAdapter;
@@ -41,7 +41,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return inflater.inflate(R.layout.fragment_example, container, false);
     }
 
     @Override
@@ -55,8 +55,8 @@ public class HomeFragment extends Fragment {
         mExampleList = new ArrayList<>();
 
         mRequestQueue = Volley.newRequestQueue(getActivity());/**/
-        new homeTask().execute();
-        //parseJSON();
+        //new homeTask().execute();
+        parseJSON();
     }
 
     private void parseJSON() {

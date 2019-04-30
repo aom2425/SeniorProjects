@@ -12,22 +12,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activty.DetailActivity"></activity>
         <activity
             android:name=".helper.MainScreen"
-            android:label="@string/title_activity_main_screen"></activity>
-        <activity android:name=".activty.DashboardActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".activty.Restaurant.RestaurantActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:label="@string/title_activity_main_screen" />
+        <activity
+            android:name=".activty.DashboardActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activty.Restaurant.RestaurantActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activty.RegisterActivity" />
         <activity android:name=".activty.RegisterRestaurant" />
         <activity android:name=".activty.RegisterCyclist" />
-
         <activity android:name=".activty.LoginActivity" />
-        <activity android:name=".activty.UserResponsabilities"/>
+        <activity android:name=".activty.UserResponsabilities" />
         <activity android:name=".activty.MainActivity">
-
-        <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />

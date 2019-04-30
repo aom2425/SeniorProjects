@@ -19,9 +19,9 @@ import java.net.Socket;
 public class TCPRegister {
 
     private String serverMessage;
-    IpPort ipPort;
-    public final String SERVERIP = ipPort.getHost(); //your computer IP address
-    public final int SERVERPORT = ipPort.getPort();
+    private IpPort ipPort;
+    private final String SERVERIP = ipPort.HOST; //your computer IP address
+    private final int SERVERPORT = ipPort.PORT;
     public String resp;
     PrintWriter out;
     BufferedReader in;
@@ -48,6 +48,12 @@ public class TCPRegister {
             InetAddress serverAddr = InetAddress.getByName(SERVERIP);
             Log.e("TCP Client", "C: Connecting...");
             Socket socket = new Socket(serverAddr, SERVERPORT);
+
+            //Hash password to send
+            HandleMd5 hmd5 = new HandleMd5(Password);
+            Password = hmd5.md5(Password);
+            Log.d("Password", Password);
+
             sendMesage(socket, Name, Email, Password);
             receiveMessage(socket);
             Log.d("MyApp",serverMessage);

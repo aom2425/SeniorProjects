@@ -2,6 +2,7 @@ package com.example.seniorproject;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,14 @@ import java.util.ArrayList;
 public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleViewHolder> {
     private Context mContext;
     private ArrayList<ExampleItem> mExampleList;
+    private OnItemClickListener onListener;
+
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+    public void setOnItemClickListener(OnItemClickListener listener){
+        onListener = listener;
+    }
 
     public ExampleAdapter(Context context, ArrayList<ExampleItem> exampleList){
         mContext = context;
@@ -56,6 +65,18 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
             mImageView = itemView.findViewById(R.id.image_view);
             mTextViewCreator = itemView.findViewById(R.id.text_view_creator);
             mTextViewLikes = itemView.findViewById(R.id.text_view_likes);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(onListener != null){
+                        int postion = getAdapterPosition();
+                        if(postion != RecyclerView.NO_POSITION){
+                            onListener.onItemClick(postion);
+                        }
+                    }
+                }
+            });
         }
     }
 }
